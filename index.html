@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prom?</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #fce7f3;
+        }
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            text-align: center;
+        }
+        .space-y-4 > * + * {
+            margin-top: 1rem;
+        }
+        .space-y-8 > * + * {
+            margin-top: 2rem;
+        }
+        .title {
+            font-size: 1.875rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        .subtitle {
+            font-size: 1.25rem;
+            color: #4b5563;
+        }
+        .button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 1.125rem;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.2s;
+        }
+        .primary-button {
+            background-color: #ec4899;
+            color: white;
+        }
+        .primary-button:hover {
+            background-color: #db2777;
+        }
+        .secondary-button {
+            background-color: #9ca3af;
+            color: white;
+        }
+        .big-text {
+            font-size: 2.25rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fade-in 0.5s forwards;
+        }
+        .party-emoji {
+            font-size: 4rem;
+            margin: 1rem;
+            animation: bounce 1s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script>
+        const { useState } = React;
+
+        function Promposal() {
+            const [showQuestion, setShowQuestion] = useState(false);
+            const [response, setResponse] = useState(null);
+            const [noCount, setNoCount] = useState(0);
+            const [noButtonStyle, setNoButtonStyle] = useState({});
+
+            const moveNoButton = () => {
+                const newTop = Math.random() * (window.innerHeight - 100);
+                const newLeft = Math.random() * (window.innerWidth - 100);
+                setNoButtonStyle({
+                    position: 'fixed',
+                    top: newTop + 'px',
+                    left: newLeft + 'px'
+                });
+                setNoCount(noCount + 1);
+            };
+
+            const noMessages = [
+                "Nice try 😏",
+                "You can't escape this",
+                "Still trying?",
+                "We both know you're coming",
+                "This is getting embarrassing...",
+                "Just click yes already"
+            ];
+
+            if (!showQuestion) {
+                return React.createElement("div", { className: "container" },
+                    React.createElement("div", { className: "space-y-4" },
+                        React.createElement("h1", { className: "title" }, "Hey hot stuff!👀"),
+                        React.createElement("p", { className: "subtitle" }, "It's about that time again..."),
+                        React.createElement("button", {
+                            className: "button primary-button",
+                            onClick: () => setShowQuestion(true)
+                        }, "Click me")
+                    )
+                );
+            }
+
+            if (response === null) {
+                return React.createElement("div", { className: "container" },
+                    React.createElement("div", { className: "space-y-8" },
+                        React.createElement("div", { className: "big-text fade-in" }, "So like... prom?"),
+                        React.createElement("p", { 
+                            className: "subtitle fade-in",
+                            style: { animationDelay: '0.5s' }
+                        }, "(Let's pretend this is a surprise)"),
+                        React.createElement("div", { className: "space-y-4" },
+                            React.createElement("button", {
+                                className: "button primary-button",
+                                onClick: () => setResponse('yes')
+                            }, "Obviously yes 🙄"),
+                            React.createElement("button", {
+                                className: "button secondary-button",
+                                onClick: moveNoButton,
+                                onMouseEnter: moveNoButton,
+                                style: noButtonStyle
+                            }, noCount === 0 ? "umm no" : noMessages[Math.min(noCount - 1, noMessages.length - 1)])
+                        )
+                    )
+                );
+            }
+
+            return React.createElement("div", { className: "container" },
+                React.createElement("div", { className: "space-y-8" },
+                    React.createElement("div", { className: "party-emoji" }, "🎉"),
+                    React.createElement("h1", { className: "big-text" }, "What a shock! 😱"),
+                    React.createElement("p", { className: "subtitle" }, "Who would've guessed you'd say yes? 😂"),
+                    React.createElement("p", { className: "subtitle" }, "(Now pretend this was a super creative promposal)")
+                )
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(Promposal));
+    </script>
+</body>
+</html>
